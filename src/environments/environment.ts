@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseUrl: 'https://genericcoreapi20210517150459.azurewebsites.net/',
+  scopeUri: ['api://85912f04-8b24-49bf-83f3-852fb5542e06/Nagendra'],
+  tenantId: '104c400b-5014-4cb9-83fa-0dacc295448a',
+  uiClienId: '85912f04-8b24-49bf-83f3-852fb5542e06',
+  redirectUrl: 'http://localhost:4200'
 };
 
 /*
