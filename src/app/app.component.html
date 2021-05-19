@@ -13,7 +13,17 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <router-outlet></router-outlet>
+      <div *ngIf="!loginDisplay">
+        <p>Please sign-in to see your profile information.</p>
+        <button mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
+        <button mat-raised-button *ngIf="loginDisplay" (click)="logout()">Logout</button>
+      </div>
+      <div *ngIf="loginDisplay">
+        <p>Login successful!</p>
+        <p>Request your profile information by clicking Profile above.</p>
+        <router-outlet></router-outlet>
+      </div>
+
     </div>
   </div>
 </div>

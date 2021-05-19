@@ -8,11 +8,7 @@ export class MsalUserService {
     private accessToken: any;
     public clientApplication: Msal.UserAgentApplication = null;
     constructor() {
-        // this.clientApplication = new Msal.UserAgentApplication(
-        //   {
-        //     environment.uiClienId,
-        //     'https://login.microsoftonline.com/' + environment.tenantId,
-        //   }
+        // this.clientApplication = new Msal.UserAgentApplication()
     }
 
     public GetAccessToken(): Observable<any> {
@@ -32,7 +28,7 @@ export class MsalUserService {
 
     public getCurrentUserInfo() {
         // const user = this.clientApplication.getUser();
-        // alert(user.name);
+        alert(user.name);
     }
 
     public logout() {
