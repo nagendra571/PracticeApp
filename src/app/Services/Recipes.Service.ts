@@ -3,7 +3,6 @@ import { EventEmitter, Injectable } from "@angular/core";
 
 @Injectable({providedIn: 'root'})
 export class RecipesService {
-
   recipeSelected = new EventEmitter<Recipe>();
 
   recipes: Recipe[] = [
@@ -16,5 +15,3 @@ export class RecipesService {
   }
 
 }
-
-

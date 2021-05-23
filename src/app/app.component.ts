@@ -22,8 +22,13 @@ export class AppComponent implements OnInit {
     private msalBroadcastService: MsalBroadcastService
     ) { }
 
+  navbarClicked(values:string){
+    this.ActiveTab = values;
+  }
+
   ngOnInit() {
     this.isIframe = window !== window.parent && !window.opener;
+
     this.msalBroadcastService.msalSubject$
       .pipe(
         filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
@@ -42,11 +47,8 @@ export class AppComponent implements OnInit {
       });
   }
 
-  navbarClicked(values:string){
-    this.ActiveTab = values;
-  }
-
   login() {
+    // ********************** For popup style ************************
     // this.authService.loginPopup()
     //   .subscribe({
     //     next: (result) => {
@@ -55,7 +57,10 @@ export class AppComponent implements OnInit {
     //     },
     //     error: (error) => console.log(error)
     //   });
+    // ********************** For popup style ************************
+
     // this.authService.loginRedirect();
+
     if (this.msalGuardConfig.authRequest){
       this.authService.loginRedirect({...this.msalGuardConfig.authRequest} as RedirectRequest);
     } else {
