@@ -1,12 +1,12 @@
 import { RecipesService } from './../../Services/Recipes.Service';
 import { Recipe } from './../recipe.model';
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 // const ToDoList_ENDPOINT = 'https://genericcoreapi20210517150459.azurewebsites.net/api/TodoItems';
-// const ToDoList_ENDPOINT = 'https://genericcoreapi20210517150459.azurewebsites.net/api/TodoItems/getTodoList';
-const ToDoList_ENDPOINT = 'https://genericcoreapi20210517150459.azurewebsites.net/getTodoList';
+const ToDoList_ENDPOINT = 'https://genericcoreapi20210517150459.azurewebsites.net/api/TodoItems/getTodoList';
+// const ToDoList_ENDPOINT = 'https://genericcoreapi20210517150459.azurewebsites.net/getTodoList';
 // const ToDoList_ENDPOINT = 'https://localhost:44349/api/TodoItems/getTodoList';
 
 
@@ -24,8 +24,12 @@ type ProfileType = {
 })
 export class RecipesListComponent implements OnInit {
   recipes: Recipe[] = [];
+  headers: any;
 
-  constructor(private recipeService: RecipesService, private http: HttpClient) { }
+  constructor(private recipeService: RecipesService, private http: HttpClient) {
+    this.headers = new HttpHeaders();
+    this.headers.append('Access-Control-Allow-Headers', 'Authorization');
+  }
 
   ngOnInit(): void {
     this.getProfile();
@@ -33,7 +37,7 @@ export class RecipesListComponent implements OnInit {
   }
 
   getProfile() {
-    this.http.get(ToDoList_ENDPOINT)
+    this.http.get<any>(ToDoList_ENDPOINT)
       .subscribe((p: ProfileType[]) => {
         console.log(p);
         p.forEach((item, index) => {

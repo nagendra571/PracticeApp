@@ -1,8 +1,18 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from '@azure/msal-angular';
 import { EventMessage, EventType, InteractionStatus, RedirectRequest } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+
+
+const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
+type ProfileType = {
+  givenName?: string,
+  surname?: string,
+  userPrincipalName?: string,
+  id?: string
+};
 
 @Component({
   selector: 'app-root',
@@ -16,10 +26,14 @@ export class AppComponent implements OnInit {
   private readonly _destroying$ = new Subject<void>();
 
   ActiveTab: string = 'Recipe';
+  profile!: ProfileType;
 
-  constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
+
+  constructor(@Inject(MSAL_GUARD_CONFIG)
+    private msalGuardConfig: MsalGuardConfiguration,
     private authService: MsalService,
-    private msalBroadcastService: MsalBroadcastService
+    private msalBroadcastService: MsalBroadcastService,
+    private http: HttpClient
     ) { }
 
   navbarClicked(values:string){
@@ -44,6 +58,15 @@ export class AppComponent implements OnInit {
       )
       .subscribe(() => {
         this.setLoginDisplay();
+      });
+
+      this.getProfile();
+  }
+
+  getProfile() {
+    this.http.get(GRAPH_ENDPOINT)
+      .subscribe(profile => {
+        this.profile = profile;
       });
   }
 
@@ -70,7 +93,7 @@ export class AppComponent implements OnInit {
 
   logout() { // Add log out function here
     this.authService.logoutRedirect({
-      postLogoutRedirectUri: 'http://localhost:4200'
+      postLogoutRedirectUri: 'https://nagangularapp.azurewebsites.net/'
     });
   }
 

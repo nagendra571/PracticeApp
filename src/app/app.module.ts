@@ -27,6 +27,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
 const isIframe = window !== window.parent && !window.opener;
 
 const RouterMap: Routes = [
+  // {path: '', component: AppComponent, canActivate: [MsalGuard]},
   {path: 'page1', component: Page1Component, canActivate: [MsalGuard]},
   {path: 'page2', component: Page2Component, canActivate: [MsalGuard]},
   {path: 'page3', component: Page3Component, canActivate: [MsalGuard]},
@@ -76,16 +77,18 @@ const RouterMap: Routes = [
     {
       interactionType: InteractionType.Redirect, // MSAL Guard Configuration
       authRequest: {
-        scopes: ['user.read']
+        scopes: ['user.read', 'access_as_user']
       }
     },
     {
       interactionType: InteractionType.Redirect, // MSAL Interceptor Configuration
       protectedResourceMap: new Map([
         // ['api://85912f04-8b24-49bf-83f3-852fb5542e06/Nagendra',['user.read']],
+        ['https://graph.microsoft.com/v1.0/me', ['user.read']],
         ['https://genericcoreapi20210517150459.azurewebsites.net',
           [
-            'user.read'
+            // 'user.read'
+            'api://85912f04-8b24-49bf-83f3-852fb5542e06/access_as_user',
             // 'api://85912f04-8b24-49bf-83f3-852fb5542e06/read',
             // 'api://85912f04-8b24-49bf-83f3-852fb5542e06/write'
           ]
