@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
         this.setLoginDisplay();
       });
 
-      this.getProfile();
+      // this.getProfile();
   }
 
   getProfile() {

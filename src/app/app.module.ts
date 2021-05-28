@@ -28,7 +28,7 @@ const isIframe = window !== window.parent && !window.opener;
 
 const RouterMap: Routes = [
   // {path: '', component: AppComponent, canActivate: [MsalGuard]},
-  {path: 'page1', component: Page1Component, canActivate: [MsalGuard]},
+  {path: '', component: Page1Component, canActivate: [MsalGuard]},
   {path: 'page2', component: Page2Component, canActivate: [MsalGuard]},
   {path: 'page3', component: Page3Component, canActivate: [MsalGuard]},
   {path: 'page4', component: Page4Component, canActivate: [MsalGuard]},
