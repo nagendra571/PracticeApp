@@ -4,6 +4,7 @@ import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_C
 import { EventMessage, EventType, InteractionStatus, RedirectRequest } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { ConfigService } from './Configurations/config.service';
 
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
@@ -33,8 +34,11 @@ export class AppComponent implements OnInit {
     private msalGuardConfig: MsalGuardConfiguration,
     private authService: MsalService,
     private msalBroadcastService: MsalBroadcastService,
-    private http: HttpClient
-    ) { }
+    private http: HttpClient,
+    // private conf: ConfigService
+    ) {
+      // console.log('config in app Comp', conf.getSettings('clientId'));
+    }
 
   navbarClicked(values:string){
     this.ActiveTab = values;

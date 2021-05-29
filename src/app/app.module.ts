@@ -22,13 +22,14 @@ import { Page3Component } from './pages/page3/page3.component';
 import { Page4Component } from './pages/page4/page4.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MsalConfigDynamicModule } from './Configurations/msal-application.module';
 
 const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
 const isIframe = window !== window.parent && !window.opener;
 
 const RouterMap: Routes = [
   // {path: '', component: AppComponent, canActivate: [MsalGuard]},
-  {path: '', component: Page1Component, canActivate: [MsalGuard]},
+  //{path: '', component: Page1Component, canActivate: [MsalGuard]},
   {path: 'page2', component: Page2Component, canActivate: [MsalGuard]},
   {path: 'page3', component: Page3Component, canActivate: [MsalGuard]},
   {path: 'page4', component: Page4Component, canActivate: [MsalGuard]},
@@ -61,41 +62,8 @@ const RouterMap: Routes = [
     RouterModule.forRoot(RouterMap, {
       initialNavigation: !isIframe ? 'enabled' : 'disabled' // Don't perform initial navigation in iframes
     }),
-
-    MsalModule.forRoot( new PublicClientApplication({
-      auth: {
-        clientId: '6134f70b-31ff-4737-b4ec-d06253627758', // This is your client ID
-        authority: 'https://login.microsoftonline.com/104c400b-5014-4cb9-83fa-0dacc295448a', // This is your tenant ID
-        // redirectUri: 'http://localhost:4200'// This is your redirect URI
-        redirectUri: 'https://nagangularapp.azurewebsites.net/'// This is your redirect URI
-      },
-      cache: {
-        cacheLocation: 'localStorage',
-        storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
-      }
-    }),
-    {
-      interactionType: InteractionType.Redirect, // MSAL Guard Configuration
-      authRequest: {
-        scopes: ['user.read', 'access_as_user']
-      }
-    },
-    {
-      interactionType: InteractionType.Redirect, // MSAL Interceptor Configuration
-      protectedResourceMap: new Map([
-        // ['api://85912f04-8b24-49bf-83f3-852fb5542e06/Nagendra',['user.read']],
-        ['https://graph.microsoft.com/v1.0/me', ['user.read']],
-        ['https://genericcoreapi20210517150459.azurewebsites.net',
-          [
-            // 'user.read'
-            'api://85912f04-8b24-49bf-83f3-852fb5542e06/access_as_user',
-            // 'api://85912f04-8b24-49bf-83f3-852fb5542e06/read',
-            // 'api://85912f04-8b24-49bf-83f3-852fb5542e06/write'
-          ]
-        ]
-      ])
-    }
-    )],
+    MsalConfigDynamicModule.forRoot('assets/configuration.json'),
+  ],
 
   providers: [
     {

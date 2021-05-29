@@ -19,7 +19,7 @@ import { ConfigService } from './config.service';
 const AUTH_CONFIG_URL_TOKEN = new InjectionToken<string>('AUTH_CONFIG_URL');
 
 export function initializerFactory(env: ConfigService, configUrl: string): any {
-    const promise = env.init(configUrl).then((value) => {
+    const promise = env.load(configUrl).then((value) => {
         console.log('finished getting configurations dynamically.');
     });
     return () => promise;
@@ -32,6 +32,7 @@ export function loggerCallback(logLevel: LogLevel, message: string) {
 }
 
 export function MSALInstanceFactory(config: ConfigService): IPublicClientApplication {
+  console.log('MSALInstanceFactory', config.getSettings('clientId'));
   return new PublicClientApplication({
     auth: config.getSettings('msal').auth,
     cache: config.getSettings('msal').cache,
@@ -47,7 +48,7 @@ export function MSALInstanceFactory(config: ConfigService): IPublicClientApplica
 
 export function MSALInterceptorConfigFactory(config: ConfigService): MsalInterceptorConfiguration {
     const protectedResourceMap = new Map<string, Array<string>>(config.getSettings('interceptor').protectedResourceMap)
-
+    console.log('MSALInstanceFactory', config.getSettings('clientId'));
     return {
       interactionType: config.getSettings('interceptor').interactionType,
       protectedResourceMap
@@ -75,7 +76,8 @@ export class MsalConfigDynamicModule {
                 ConfigService,
                 { provide: AUTH_CONFIG_URL_TOKEN, useValue: configFile },
                 { provide: APP_INITIALIZER, useFactory: initializerFactory,
-                     deps: [ConfigService, AUTH_CONFIG_URL_TOKEN], multi: true },
+                     deps: [ConfigService, AUTH_CONFIG_URL_TOKEN], multi: true
+                },
                 {
                     provide: MSAL_INSTANCE,
                     useFactory: MSALInstanceFactory,
